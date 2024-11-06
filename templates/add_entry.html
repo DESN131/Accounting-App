@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加条目</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+            input[type="submit"] {
+                font-size: 18px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>添加条目</h1>
+    <form method="post">
+        <label for="date">日期:</label>
+        <input type="date" name="date" value="{{ today }}" required>
+        
+        <label for="description">描述:</label>
+        <input type="text" name="description">
+        
+        <label for="amount">金额:</label>
+        <input type="number" step="0.01" name="amount">
+        
+        <label for="type">类型:</label>
+        <select name="type">
+            <option value="expense">支出</option>
+            <option value="income">收入</option>
+        </select>
+        
+        <label for="currency">币种:</label>
+        <select name="currency">
+            <option value="AUD">澳元</option>
+            <option value="CNY">人民币</option>
+        </select>
+        
+        <label for="category">分类标签:</label>
+        <select name="category">
+            <option value="">选择或输入标签</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+        
+        <input type="submit" value="添加条目">
+    </form>
+    <a href="{{ url_for('index') }}">返回主页</a>
+</body>
+</html>
