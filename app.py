@@ -38,21 +38,21 @@ init_db()
 def generate_chart():
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT date, amount, type FROM entries")
+        cursor.execute("SELECT date, SUM(amount), type FROM entries GROUP BY date ORDER BY date")
         entries = cursor.fetchall()
 
     dates = [entry[0] for entry in entries]
     income = [entry[1] if entry[2] == 'income' else 0 for entry in entries]
-    expense = [-entry[1] if entry[2] == 'expense' else 0 for entry in entries]
+    expense = [entry[1] if entry[2] == 'expense' else 0 for entry in entries]
 
     # 绘制图表
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(10, 7))
     plt.plot(dates, income, marker='o', label="收入", color="green")
     plt.plot(dates, expense, marker='o', label="支出", color="red")
     plt.title("收入与支出记录")
     plt.xlabel("日期")
     plt.ylabel("金额")
-    # plt.xticks(rotation=45)
+    plt.xticks(rotation=45)
     plt.legend()
 
     # 保存图表到内存
@@ -66,10 +66,10 @@ def generate_chart():
 def index():
     with sqlite3.connect("database.db") as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM entries")
+        cursor.execute("SELECT * FROM entries ORDER BY date DESC")
         entries = cursor.fetchall()
         # 计算总支出（只包含类型为 'expense' 的条目）
-        total_expense = sum(-entry[3] for entry in entries if entry[4] == 'expense')
+        total_expense = round(sum(entry[3] for entry in entries if entry[4] == 'expense'), 2)
 
     chart_url = generate_chart()
     return render_template("index.html", entries=entries, total_expense=total_expense, chart_url=chart_url)
@@ -163,5 +163,5 @@ def delete_entry(id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
