@@ -7,7 +7,7 @@ services:
     ports:
       - "${PORT:-80}:5000"
     volumes:
-      - "${DATA_DIR:-./data}:/data"
+      - "${DATA_DIR:-./data}:/app/data"
     environment:
-      - DB_PATH=/data/database.db
+      - DB_PATH=/app/data/database.db
     restart: unless-stopped
