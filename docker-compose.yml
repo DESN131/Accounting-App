@@ -2,7 +2,7 @@
 services:
   accounting-app:
     build: .
-    image: accounting-app:latest
+    image: desn131/accounting-app
     container_name: accounting-app
     ports:
       - "${PORT:-80}:5000"
