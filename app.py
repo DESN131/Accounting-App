@@ -36,7 +36,7 @@ init_db()
 
 # 分别生成收入和支出的图表
 def generate_chart():
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT date, SUM(amount), type FROM entries GROUP BY date ORDER BY date")
         entries = cursor.fetchall()
