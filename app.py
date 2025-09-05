@@ -8,7 +8,7 @@ import base64
 
 # 设置 Matplotlib 使用中文字体
 # plt.rcParams['font.sans-serif'] = ['SimHei']  # 使用黑体
-plt.rcParams['font.family'] = 'Microsoft YaHei'
+# plt.rcParams['font.family'] = 'Microsoft YaHei'
 plt.rcParams['axes.unicode_minus'] = False    # 解决负号显示问题
 
 app = Flask(__name__)
