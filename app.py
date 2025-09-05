@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 # 初始化数据库
 def init_db():
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS entries (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +64,7 @@ def generate_chart():
 
 @app.route('/')
 def index():
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM entries ORDER BY date DESC")
         entries = cursor.fetchall()
@@ -85,7 +85,7 @@ def add_entry():
         currency = request.form.get("currency") or 'AUD'
         category = request.form.get("category")
 
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("/data/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO entries (date, description, amount, type, currency, category) VALUES (?, ?, ?, ?, ?, ?)",
                            (date, description, amount, type, currency, category))
@@ -93,7 +93,7 @@ def add_entry():
         return redirect(url_for('index'))
 
     today = datetime.now().strftime('%Y-%m-%d')
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM categories")
         categories = [row[0] for row in cursor.fetchall()]
@@ -109,14 +109,14 @@ def edit_entry(id):
         currency = request.form.get("currency")
         category = request.form.get("category")
 
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("/data/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("UPDATE entries SET date=?, description=?, amount=?, type=?, currency=?, category=? WHERE id=?",
                            (date, description, amount, type, currency, category, id))
             conn.commit()
         return redirect(url_for('index'))
     
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM entries WHERE id=?", (id,))
         entry = cursor.fetchone()
@@ -129,7 +129,7 @@ def edit_entry(id):
 def manage_categories():
     if request.method == "POST":
         category_name = request.form.get("category_name")
-        with sqlite3.connect("database.db") as conn:
+        with sqlite3.connect("/data/database.db") as conn:
             cursor = conn.cursor()
             try:
                 cursor.execute("INSERT INTO categories (name) VALUES (?)", (category_name,))
@@ -138,7 +138,7 @@ def manage_categories():
                 pass  # Ignore if category already exists
         return redirect(url_for('manage_categories'))
     
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM categories")
         categories = cursor.fetchall()
@@ -147,7 +147,7 @@ def manage_categories():
 
 @app.route('/delete_category/<int:id>', methods=["POST"])
 def delete_category(id):
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM categories WHERE id=?", (id,))
         conn.commit()
@@ -155,7 +155,7 @@ def delete_category(id):
 
 @app.route('/delete_entry/<int:id>', methods=["POST"])
 def delete_entry(id):
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("/data/database.db") as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM entries WHERE id=?", (id,))
         conn.commit()
