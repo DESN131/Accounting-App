@@ -1,0 +1,14 @@
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.vscode/
+.idea/
+venv/
+.env
+data/
+tests/
+node_modules/
+dist/
+build/
