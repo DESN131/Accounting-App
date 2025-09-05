@@ -1,0 +1,13 @@
+# docker-compose.yml
+services:
+  accounting-app:
+    build: .
+    image: accounting-app:latest
+    container_name: accounting-app
+    ports:
+      - "${PORT:-80}:5000"
+    volumes:
+      - "${DATA_DIR:-./data}:/data"
+    environment:
+      - DB_PATH=/data/database.db
+    restart: unless-stopped
