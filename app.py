@@ -47,11 +47,11 @@ def generate_chart():
 
     # 绘制图表
     plt.figure(figsize=(10, 7))
-    plt.plot(dates, income, marker='o', label="收入", color="green")
-    plt.plot(dates, expense, marker='o', label="支出", color="red")
-    plt.title("收入与支出记录")
-    plt.xlabel("日期")
-    plt.ylabel("金额")
+    plt.plot(dates, income, marker='o', label="Income", color="green")
+    plt.plot(dates, expense, marker='o', label="Expense", color="red")
+    plt.title("Income and Expense Records")
+    plt.xlabel("Date")
+    plt.ylabel("Amount")
     plt.xticks(rotation=45)
     plt.legend()
 
